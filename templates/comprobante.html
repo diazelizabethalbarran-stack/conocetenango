@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprobante - Conoce Tenango</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 25px;
+            font-family: Arial, sans-serif;
+            background: #eaf7fc;
+            color: #12385c;
+        }
+        .comprobante {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 14px;
+            text-align: center;
+            box-shadow: 0 4px 15px #00000018;
+        }
+        h1 { color: #173f63; }
+        .datos { text-align: left; margin: 25px 0; }
+        .datos p { padding: 8px; border-bottom: 1px solid #dceaf2; }
+        .qr { width: 210px; max-width: 100%; }
+        a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 18px;
+            background: #4361ee;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+        @media print {
+            a { display: none; }
+            body { background: white; }
+            .comprobante { box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <main class="comprobante">
+        <h1>CONOCE TENANGO</h1>
+        <h2>🎟️ Comprobante de compra</h2>
+
+        <div class="datos">
+            <p><strong>Número de compra:</strong> {{ compra.id_compra }}</p>
+            <p><strong>Nombre:</strong> {{ compra.nombre_usuario }}</p>
+            <p><strong>Evento:</strong> {{ compra.nombre_evento }}</p>
+            <p><strong>Fecha del evento:</strong> {{ compra.fecha_evento }}</p>
+            <p><strong>Hora:</strong> {{ compra.hora_evento }}</p>
+            <p><strong>Cantidad de boletos:</strong> {{ compra.cantidad }}</p>
+            <p><strong>Total:</strong> ${{ "%.2f"|format(compra.total) }}</p>
+            <p><strong>Estado:</strong> {{ compra.estado }}</p>
+        </div>
+
+        <h3>Tu código QR</h3>
+        <p>Escanéalo para consultar la información de esta compra.</p>
+        <img class="qr"
+             src="data:image/png;base64,{{ qr_base64 }}"
+             alt="Código QR del comprobante">
+
+        <br>
+        <button onclick="window.print()">Imprimir comprobante</button>
+        <br>
+        <a href="{{ url_for('inicio') }}">Volver al inicio</a>
+    </main>
+</body>
+</html>

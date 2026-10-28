@@ -1,0 +1,524 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle - Conoce Tenango</title>
+    <style>
+        /* =========================================
+   DISEÑO GENERAL - CONOCE TENANGO
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: #eaf7fc;
+    color: #12385c;
+}
+
+
+/* =========================================
+   ENCABEZADO
+========================================= */
+
+header {
+    width: 100%;
+    background: #173f63;
+    padding: 22px 35px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header h1 {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    background: #4361ee;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+header a:hover {
+    background: #3049c8;
+}
+
+
+/* =========================================
+   CONTENIDO
+========================================= */
+
+main {
+    width: 92%;
+    max-width: 1100px;
+    margin: 40px auto;
+}
+
+
+/* =========================================
+   TARJETAS
+========================================= */
+
+.detalle {
+    background: white;
+    width: 100%;
+    max-width: 850px;
+    margin: auto;
+    padding: 35px;
+    border-radius: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+.detalle h2 {
+    color: #173f63;
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+.detalle h3 {
+    color: #173f63;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.detalle p {
+    color: #5c7185;
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   IMÁGENES
+========================================= */
+
+.detalle img {
+    max-width: 100%;
+    border-radius: 18px;
+}
+
+
+/* =========================================
+   DATOS
+========================================= */
+
+.dato {
+    background: #f1f8fc;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 14px;
+    text-align: left;
+}
+
+.dato strong {
+    color: #173f63;
+}
+
+
+/* =========================================
+   INPUTS
+========================================= */
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 13px 15px;
+    margin: 7px 0 16px;
+
+    border: 2px solid #d7e8f2;
+    border-radius: 12px;
+
+    outline: none;
+    font-size: 15px;
+
+    background: #f8fcfe;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #4361ee;
+    background: white;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+
+/* =========================================
+   ETIQUETAS
+========================================= */
+
+label {
+    display: block;
+    text-align: left;
+    margin-top: 5px;
+
+    color: #173f63;
+    font-weight: bold;
+}
+
+
+/* =========================================
+   BOTONES
+========================================= */
+
+button {
+    border: none;
+    padding: 12px 22px;
+
+    border-radius: 12px;
+
+    background: #4361ee;
+    color: white;
+
+    font-weight: bold;
+    font-size: 15px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #3049c8;
+    transform: translateY(-2px);
+}
+
+
+/* =========================================
+   BOTONES GRANDES
+========================================= */
+
+.botones {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+
+/* =========================================
+   BOTÓN REGRESAR
+========================================= */
+
+.regresar {
+    margin-top: 25px;
+    background: #173f63;
+}
+
+.regresar:hover {
+    background: #0d2e4d;
+}
+
+
+/* =========================================
+   PERFIL
+========================================= */
+
+.avatar {
+    width: 100px;
+    height: 100px;
+
+    margin: 0 auto 20px;
+
+    border-radius: 50%;
+
+    background: #dfeefe;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 45px;
+}
+
+
+/* =========================================
+   ADMINISTRACIÓN
+========================================= */
+
+.admin-seccion {
+    background: #f1f8fc;
+    padding: 20px;
+    margin: 18px 0;
+    border-radius: 18px;
+    text-align: left;
+}
+
+.admin-seccion h3 {
+    margin-bottom: 15px;
+    color: #173f63;
+}
+
+.admin-botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+
+/* =========================================
+   CONTACTO
+========================================= */
+
+.contacto .dato {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.contacto .dato strong {
+    font-size: 22px;
+}
+
+
+/* =========================================
+   MENSAJE
+========================================= */
+
+.mensaje {
+    background: #e5f3ff;
+    padding: 14px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    color: #315875;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 700px) {
+
+    header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .detalle {
+        padding: 22px;
+    }
+
+    .botones,
+    .admin-botones {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+}
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="{{ url_for('mapa') }}">← Volver al mapa</a>
+    <h1>CONOCE TENANGO</h1>
+</header>
+
+<main>
+    <div class="detalle">
+
+        <img id="foto" alt="Lugar de Tenango del Valle">
+
+        <div class="contenido">
+            <h2 id="titulo"></h2>
+            <p id="descripcion"></p>
+
+            <!-- CODIGO QR DE CADA LUGAR -->
+            <section class="seccion-qr">
+                <h3>📱 Código QR del lugar</h3>
+                <p>Escanea este código para abrir la información de este lugar.</p>
+                <div id="codigoQR"></div>
+                <p id="mensajeQR"></p>
+            </section>
+
+            <div class="botones">
+                <button class="reservar" onclick="reservar()">
+                    📅 Reservar
+                </button>
+
+                <button class="comprar" onclick="comprar()">
+                    🛒 Comprar
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Biblioteca para generar códigos QR -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script>
+
+const lugares = {
+    1: {
+        id: 1,
+        titulo: "Zona Arqueológica de Teotenango",
+        foto: "/static/imagenes/teotenango.jpg",
+        descripcion: "Importante zona arqueológica de Tenango del Valle. En este sitio puedes conocer parte de la historia y patrimonio cultural de la región."
+    },
+    2: {
+        id: 2,
+        titulo: "Museo Dr. Román Piña Chan",
+        foto: "/static/imagenes/museo.jpg",
+        descripcion: "Museo dedicado al patrimonio arqueológico de Tenango del Valle y a la historia de la región."
+    },
+    3: {
+        id: 3,
+        titulo: "Parroquia de la Asunción",
+        foto: "/static/imagenes/parroquia.jpg",
+        descripcion: "Templo histórico ubicado en el centro de Tenango del Valle."
+    },
+    4: {
+        id: 4,
+        titulo: "Parque Humboldt",
+        foto: "/static/imagenes/parque.jpg",
+        descripcion: "Espacio verde donde puedes caminar, descansar y disfrutar de un momento de tranquilidad."
+    },
+    5: {
+        id: 5,
+        titulo: "Restaurante Bar Xoly",
+        foto: "/static/imagenes/xoly.jpg",
+        descripcion: "Restaurante ubicado en el centro de Tenango del Valle, ideal para disfrutar de comida durante tu visita."
+    },
+    6: {
+        id: 6,
+        titulo: "Hotel Boutique Roble del Valle",
+        foto: "/static/imagenes/roble.jpg",
+        descripcion: "Hospedaje ubicado en Tenango del Valle para visitantes que desean quedarse en el municipio."
+    }
+};
+
+
+const parametros = new URLSearchParams(window.location.search);
+const idLugar = parametros.get("id");
+
+// Recuperar la información seleccionada desde el mapa
+let lugar = null;
+
+try {
+    const guardado = localStorage.getItem("lugarDetalle");
+
+    if (guardado) {
+        const datos = JSON.parse(guardado);
+
+        if (String(datos.id) === String(idLugar)) {
+            lugar = datos;
+        }
+    }
+} catch (error) {
+    console.error("Error al recuperar el lugar:", error);
+}
+
+// Lugares de respaldo por si no se guardaron los datos del mapa
+const lugares = {
+    1: {
+        id: 1,
+        nombre: "Zona Arqueológica de Teotenango",
+        foto: "zona.png",
+        descripcion: "Importante zona arqueológica de Tenango del Valle."
+    },
+    2: {
+        id: 2,
+        nombre: "Museo Arqueológico Dr. Román Piña Chan",
+        foto: "museo.jpg",
+        descripcion: "Museo dedicado al patrimonio arqueológico y a la historia de la región."
+    }
+};
+
+if (!lugar) {
+    lugar = lugares[idLugar] || null;
+}
+
+if (lugar) {
+    const titulo = lugar.nombre || lugar.titulo || "Lugar de Tenango";
+    const foto = document.getElementById("foto");
+    const tituloElemento = document.getElementById("titulo");
+    const descripcion = document.getElementById("descripcion");
+
+    tituloElemento.textContent = titulo;
+    descripcion.textContent = lugar.descripcion || "Información del lugar turístico.";
+
+    // Usar la foto guardada en el mapa
+    let rutaFoto = lugar.foto || "";
+
+    if (rutaFoto && !rutaFoto.startsWith("http") &&
+        !rutaFoto.startsWith("/")) {
+        rutaFoto = "/static/imagenes/" +
+            rutaFoto.replace(/^imagenes\//, "");
+    }
+
+    if (rutaFoto) {
+        foto.src = rutaFoto;
+        foto.alt = titulo;
+
+        foto.onerror = function () {
+            this.style.display = "none";
+        };
+    } else {
+        foto.style.display = "none";
+    }
+
+    // Generar el código QR
+    const contenedorQR = document.getElementById("codigoQR");
+    const mensajeQR = document.getElementById("mensajeQR");
+
+    contenedorQR.innerHTML = "";
+
+    if (typeof QRCode !== "undefined") {
+        new QRCode(contenedorQR, {
+            text: window.location.href,
+            width: 180,
+            height: 180,
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        mensajeQR.textContent = "Código QR de: " + titulo;
+    } else {
+        mensajeQR.textContent =
+            "No se pudo cargar el generador QR. Revisa tu conexión a Internet.";
+    }
+} else {
+    document.getElementById("titulo").textContent =
+        "No se encontró el lugar";
+
+    document.getElementById("descripcion").textContent =
+        "Regresa al mapa y selecciona nuevamente el lugar.";
+}
+
+function reservar() {
+    if (!lugar) {
+        alert("No se ha seleccionado ningún lugar.");
+        return;
+    }
+
+    window.location.href = "/reservar/" + lugar.id;
+}
+
+function comprar() {
+    window.location.href = "/eventos";
+}
+</script>
+</body>
+</html>

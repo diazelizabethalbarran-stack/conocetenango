@@ -1,0 +1,1680 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conoce Tenango</title>
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+   <style>
+/* =====================================================
+   CONOCE TENANGO - MAPA.CSS
+   Diseño azul claro, tarjetas blancas y mapa Leaflet
+===================================================== */
+
+:root {
+    --fondo: #eaf7fc;
+    --blanco: #ffffff;
+    --azul-oscuro: #173f63;
+    --azul: #4361ee;
+    --azul-hover: #3049c8;
+    --azul-claro: #eaf5fb;
+    --texto: #12385c;
+    --muted: #607b96;
+    --borde: #dcecf4;
+    --rojo: #e94b43;
+    --morado: #844bc1;
+    --verde: #20a85a;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--fondo);
+    color: var(--texto);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* =========================
+   ENCABEZADO Y MENÚ
+========================= */
+
+header,
+.encabezado,
+.topbar {
+    min-height: 82px;
+    width: 100%;
+    padding: 12px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background: var(--blanco);
+    color: var(--azul-oscuro);
+    box-shadow: 0 3px 14px rgba(23, 63, 99, 0.10);
+    position: relative;
+    z-index: 500;
+}
+
+.logo-titulo,
+.marca-logo,
+.logo-contenedor {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo,
+.logo-titulo img,
+.logo-contenedor img {
+    width: 62px;
+    height: 62px;
+    object-fit: contain;
+}
+
+.logo-titulo h1,
+header h1,
+.encabezado h1,
+.topbar h1 {
+    margin: 0;
+    color: var(--azul-oscuro);
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.logo-titulo p {
+    margin: 3px 0 0;
+    color: #009fe3;
+    font-weight: 700;
+}
+
+nav,
+.menu-principal,
+.menu {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 26px;
+    flex-wrap: wrap;
+}
+
+nav a,
+.menu-principal a,
+.menu a {
+    color: var(--azul-oscuro);
+    font-weight: 700;
+    transition: color .2s ease;
+}
+
+nav a:hover,
+nav a.activo,
+.menu-principal a:hover,
+.menu a:hover {
+    color: #009fe3;
+}
+
+/* =========================
+   ESTRUCTURA DEL MAPA
+   Se cubren distintos nombres de clases para trabajar
+   con la estructura ya existente de mapa.html.
+========================= */
+
+main,
+.contenido-mapa,
+.contenido-principal {
+    color: var(--texto);
+}
+
+.contenedor-principal,
+.layout-mapa,
+.mapa-layout,
+.mapa-grid,
+.distribucion-mapa,
+.contenedor-mapa-pagina,
+.mapa-contenido {
+    width: min(1500px, 98%);
+    margin: 16px auto 28px;
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr) 330px;
+    gap: 16px;
+    align-items: stretch;
+}
+
+.panel-izquierdo,
+.panel-lateral,
+.sidebar,
+.panel-mapa,
+.mapa-principal,
+.mapa-central,
+.mapa-contenedor,
+.panel-derecho,
+.panel-informacion,
+.panel-info,
+.informacion-panel {
+    min-width: 0;
+    background: var(--blanco);
+    border-radius: 18px;
+    box-shadow: 0 6px 18px rgba(23, 63, 99, .12);
+}
+
+.panel-izquierdo,
+.panel-lateral,
+.sidebar {
+    padding: 20px 18px;
+}
+
+.panel-mapa,
+.mapa-principal,
+.mapa-central,
+.mapa-contenedor {
+    padding: 14px;
+    overflow: hidden;
+}
+
+.panel-derecho,
+.panel-informacion,
+.panel-info,
+.informacion-panel {
+    padding: 20px;
+    overflow-wrap: anywhere;
+}
+
+.panel-izquierdo h2,
+.panel-lateral h2,
+.sidebar h2 {
+    margin: 0 0 15px;
+    font-size: 24px;
+    line-height: 1.25;
+    color: var(--azul-oscuro);
+}
+
+.panel-mapa h2,
+.mapa-principal h2,
+.mapa-central h2,
+.mapa-contenedor h2 {
+    color: var(--azul-oscuro);
+    margin: 4px 8px 6px;
+    font-size: 23px;
+}
+
+.panel-mapa p,
+.mapa-principal p,
+.mapa-central p,
+.mapa-contenedor p {
+    margin: 5px 8px 14px;
+    color: var(--muted);
+}
+
+/* El mapa siempre necesita una altura explícita para Leaflet. */
+#mapa {
+    width: 100%;
+    height: 610px;
+    min-height: 420px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #dbeccf;
+    box-shadow: 0 5px 16px rgba(23, 63, 99, .12);
+    z-index: 1;
+}
+
+.leaflet-container {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #173f63;
+    background: #e8eddf;
+}
+
+.leaflet-control-zoom a {
+    color: var(--azul-oscuro) !important;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 12px;
+}
+
+.leaflet-popup-content {
+    line-height: 1.45;
+}
+
+/* =========================
+   BUSCADOR Y FILTROS
+========================= */
+
+#buscador,
+.buscador,
+.input-buscador,
+.panel-izquierdo input,
+.panel-lateral input,
+.sidebar input {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    padding: 12px 13px;
+    border: 1px solid #cfe2ee;
+    border-radius: 12px;
+    outline: none;
+    color: var(--azul-oscuro);
+    background: #fbfdff;
+    margin: 12px 0 15px;
+}
+
+#buscador:focus,
+.buscador:focus,
+.input-buscador:focus {
+    border-color: var(--azul);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, .12);
+}
+
+.filtros,
+.botones-filtro,
+.lista-filtros,
+.opciones-filtro {
+    display: grid;
+    gap: 8px;
+    margin: 12px 0 20px;
+}
+
+.filtro,
+.boton-filtro,
+.opcion-filtro,
+.panel-izquierdo .filtros button,
+.panel-izquierdo button.filtro,
+.panel-lateral button.filtro,
+.sidebar button.filtro {
+    width: 100%;
+    text-align: left;
+    padding: 12px 14px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    color: var(--azul-oscuro);
+    background: #edf7fb;
+    font-weight: 700;
+    transition: background .2s, transform .2s, border-color .2s;
+}
+
+.filtro:hover,
+.boton-filtro:hover,
+.opcion-filtro:hover,
+.panel-izquierdo button:hover,
+.panel-lateral button:hover,
+.sidebar button:hover {
+    background: #dff0f8;
+    transform: translateY(-1px);
+}
+
+.filtro.activo,
+.boton-filtro.activo,
+.opcion-filtro.activo {
+    background: #d9edfa;
+    border-color: #b8dff1;
+}
+
+.panel-izquierdo hr,
+.panel-lateral hr,
+.sidebar hr {
+    border: 0;
+    border-top: 1px solid #dce7ed;
+    margin: 20px 0;
+}
+
+.panel-izquierdo p,
+.panel-lateral p,
+.sidebar p,
+.instrucciones {
+    color: var(--muted);
+    line-height: 1.55;
+    font-size: 14px;
+}
+
+/* =========================
+   PANEL DE INFORMACIÓN
+========================= */
+
+#informacionLugar,
+#infoLugar,
+#detalleLugar,
+.panel-derecho,
+.panel-informacion,
+.panel-info,
+.informacion-panel {
+    color: var(--texto);
+}
+
+.info {
+    width: 100%;
+}
+
+.info h2 {
+    color: var(--azul-oscuro);
+    font-size: 24px;
+    line-height: 1.25;
+    margin: 15px 0 10px;
+}
+
+.foto-lugar {
+    display: block;
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    border-radius: 15px;
+    background: #e8f4fa;
+}
+
+.foto-lugar-sin {
+    width: 100%;
+    min-height: 135px;
+    border-radius: 15px;
+    background: #eaf5fb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: var(--muted);
+    font-size: 34px;
+}
+
+.foto-lugar-sin span {
+    font-size: 12px;
+}
+
+.categoria {
+    display: inline-block;
+    padding: 6px 11px;
+    margin: 0 0 12px;
+    border-radius: 18px;
+    color: white;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.dato {
+    background: #f1f8fc;
+    border-radius: 12px;
+    padding: 12px 13px;
+    margin: 10px 0;
+    color: #4f6b82;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.dato strong {
+    color: var(--azul-oscuro);
+}
+
+.ubicacion {
+    display: inline-block;
+    margin: 8px 0 5px;
+    color: #2456ca;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.botones,
+.botones-info,
+.acciones-lugar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.comprar,
+.reservar,
+button.comprar,
+button.reservar {
+    flex: 1 1 125px;
+    padding: 12px 14px;
+    border: 0;
+    border-radius: 11px;
+    color: white;
+    background: var(--azul);
+    font-weight: 800;
+    transition: background .2s, transform .2s;
+}
+
+.comprar:hover,
+.reservar:hover {
+    background: var(--azul-hover);
+    transform: translateY(-2px);
+}
+
+/* =========================
+   GOTITAS DE LOS LUGARES
+========================= */
+
+.gotita,
+.decoracion {
+    background: transparent !important;
+    border: 0 !important;
+}
+
+.pin {
+    width: 39px;
+    height: 39px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 3px solid white;
+    border-radius: 50% 50% 50% 7px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .28);
+    transform: rotate(-45deg);
+}
+
+.pin span {
+    display: block;
+    font-size: 17px;
+    line-height: 1;
+    transform: rotate(45deg);
+}
+
+/* =========================
+   DECORACIONES ILUSTRATIVAS
+========================= */
+
+.casa {
+    width: 48px;
+    height: 42px;
+    position: relative;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,.15));
+}
+
+.techo {
+    position: absolute;
+    top: 0;
+    left: 3px;
+    width: 0;
+    height: 0;
+    border-left: 22px solid transparent;
+    border-right: 22px solid transparent;
+    border-bottom: 17px solid #e85d4a;
+}
+
+.cuerpo {
+    position: absolute;
+    left: 8px;
+    top: 16px;
+    width: 34px;
+    height: 25px;
+    background: #f6d78e;
+    border: 2px solid #aa7847;
+}
+
+.puerta {
+    position: absolute;
+    left: 21px;
+    top: 25px;
+    width: 8px;
+    height: 16px;
+    background: #805b3d;
+}
+
+.ventana {
+    position: absolute;
+    left: 11px;
+    top: 21px;
+    width: 8px;
+    height: 8px;
+    background: #8fd7ef;
+    border: 1px solid #fff;
+}
+
+.arbol {
+    font-size: 27px;
+    line-height: 1;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,.17));
+}
+
+.parque {
+    background: rgba(86, 164, 76, .85);
+    border: 2px solid #b8daa0;
+    border-radius: 14px;
+    padding: 5px;
+    text-align: center;
+    white-space: nowrap;
+    font-size: 20px;
+}
+
+.agua {
+    width: 90px;
+    height: 50px;
+    border: 4px solid #d7f2ff;
+    background: #35a9df;
+    border-radius: 50%;
+    box-shadow: inset 0 -5px 0 rgba(0, 77, 150, .12), 0 2px 4px #0002;
+}
+
+.auto {
+    font-size: 22px;
+    line-height: 1;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,.15));
+}
+
+/* CARRUSEL DE IMÁGENES */
+.carrusel-seccion {
+    width: min(1100px, 92%);
+    margin: 54px auto 48px;
+    text-align: center;
+}
+
+.carrusel-seccion h2 {
+    color: var(--azul-oscuro);
+    font-size: clamp(26px, 3vw, 34px);
+    margin: 0 0 24px;
+}
+
+.carrusel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 25px;
+    background: #dceaf1;
+    padding: 15px 50px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, .15);
+}
+
+.carrusel-contenido {
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+}
+
+.carrusel-contenido::-webkit-scrollbar {
+    display: none;
+}
+
+.carrusel-contenido .tarjeta {
+    flex: 0 0 100%;
+    min-width: 0;
+    scroll-snap-align: start;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.carrusel-contenido .tarjeta img {
+    display: block;
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+}
+
+.carrusel-contenido .tarjeta h3 {
+    padding: 15px;
+    margin: 0;
+    color: var(--azul-oscuro);
+}
+
+.carrusel .flecha {
+    display: block !important;
+    position: absolute;
+    z-index: 5;
+    top: 45%;
+    transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: var(--azul);
+    color: white;
+    font-size: 20px;
+}
+
+.carrusel .flecha:first-child {
+    left: 7px;
+}
+
+.carrusel .flecha:last-child {
+    right: 7px;
+}
+
+@media (max-width: 600px) {
+    .carrusel {
+        padding: 12px 40px;
+    }
+
+    .carrusel-contenido .tarjeta img {
+        height: 220px;
+    }
+}
+
+/* =========================
+   PANTALLA DE INICIO / PIE
+========================= */
+
+footer {
+    padding: 25px 20px;
+    background: var(--azul-oscuro);
+    color: white;
+    text-align: center;
+    margin-top: 30px;
+}
+
+footer h2,
+footer h3 {
+    color: white;
+    margin: 0 0 8px;
+}
+
+footer p {
+    margin: 0;
+    color: #edf7ff;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1150px) {
+    .contenedor-principal,
+    .layout-mapa,
+    .mapa-layout,
+    .mapa-grid,
+    .distribucion-mapa,
+    .contenedor-mapa-pagina,
+    .mapa-contenido {
+        grid-template-columns: 200px minmax(0, 1fr);
+    }
+
+    .panel-derecho,
+    .panel-informacion,
+    .panel-info,
+    .informacion-panel {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 760px) {
+    header,
+    .encabezado,
+    .topbar {
+        flex-direction: column;
+        justify-content: center;
+        padding: 14px;
+        text-align: center;
+    }
+
+    nav,
+    .menu-principal,
+    .menu {
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .contenedor-principal,
+    .layout-mapa,
+    .mapa-layout,
+    .mapa-grid,
+    .distribucion-mapa,
+    .contenedor-mapa-pagina,
+    .mapa-contenido {
+        grid-template-columns: minmax(0, 1fr);
+        width: 94%;
+    }
+
+    #mapa {
+        height: 470px;
+        min-height: 380px;
+    }
+
+    .carrusel-seccion {
+        width: 94%;
+        margin-top: 38px;
+    }
+
+    .carrusel {
+        height: 390px;
+        border-radius: 18px;
+    }
+
+    .texto-slide {
+        padding: 65px 18px 22px;
+    }
+
+    .texto-slide p {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 450px) {
+    #mapa {
+        height: 390px;
+    }
+
+    .carrusel {
+        height: 340px;
+    }
+
+    .texto-slide h3 {
+        font-size: 20px;
+    }
+
+    .botones,
+    .botones-info,
+    .acciones-lugar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+/* AGREGADO: conectar las clases reales del mapa con el diseño */
+
+.distribucion-mapa {
+    width: min(1500px, 98%);
+    margin: 16px auto 28px;
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr) 330px;
+    gap: 16px;
+    align-items: stretch;
+}
+
+.panel-opciones,
+.zona,
+.informacion {
+    min-width: 0;
+    background: var(--blanco);
+    border-radius: 18px;
+    box-shadow: 0 6px 18px rgba(23, 63, 99, 0.12);
+}
+
+.panel-opciones {
+    padding: 20px 18px;
+}
+
+.zona {
+    padding: 14px;
+    overflow: hidden;
+}
+
+.informacion {
+    padding: 20px;
+    overflow-wrap: anywhere;
+}
+
+.panel-opciones h2,
+.zona h2 {
+    color: var(--azul-oscuro);
+}
+
+.panel-opciones p,
+.zona p {
+    color: var(--muted);
+    line-height: 1.55;
+}
+
+.buscar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.buscar input {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+}
+
+.mensaje-mapa {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 10px 4px;
+}
+
+/* Diseño adaptable; conserva las tres columnas en pantallas grandes */
+
+@media (max-width: 1150px) {
+    .distribucion-mapa {
+        grid-template-columns: 200px minmax(0, 1fr);
+    }
+
+    .informacion {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 760px) {
+    .distribucion-mapa {
+        grid-template-columns: minmax(0, 1fr);
+        width: 94%;
+    }
+
+    .informacion {
+        grid-column: auto;
+    }
+}
+
+
+/* CARRUSEL AUTOMÁTICO SIN FLECHAS */
+.carrusel {
+    overflow: hidden;
+    padding: 15px;
+}
+
+.carrusel-contenido {
+    display: flex;
+    gap: 18px;
+    overflow: hidden;
+    scroll-behavior: smooth;
+}
+
+.carrusel-contenido .tarjeta {
+    flex: 0 0 100%;
+    min-width: 0;
+    overflow: hidden;
+    border-radius: 16px;
+    background: white;
+}
+
+.carrusel-contenido .tarjeta img {
+    display: block;
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+}
+
+.carrusel .flecha {
+    display: none !important;
+}
+
+@media (max-width: 600px) {
+    .carrusel-contenido .tarjeta img {
+        height: 220px;
+    }
+}
+
+   </style>
+</head>
+<body>
+
+    <header class="encabezado">
+        <div class="logo-contenedor">
+            <img src="{{ url_for('static', filename='imagenes/logo.png') }}"
+     alt="Logo Conoce Tenango"
+     class="logo">
+            <h1>Conoce Tenango</h1>
+        </div>
+    
+        <nav class="menu">
+            <a href="{{ url_for('inicio') }}">Inicio</a>
+            <a href="{{ url_for('mapa') }}">Mapa</a>
+            <a href="{{ url_for('eventos') }}">Eventos</a>
+        </nav>
+    </header>
+<main class="distribucion-mapa">
+
+    <!-- PANEL IZQUIERDO: OPCIONES -->
+    <aside class="panel-opciones">
+        <h2>🗺️ Explora Tenango</h2>
+
+        <label for="buscador">Buscar un lugar</label>
+        <div class="buscar">
+            <span>🔍</span>
+            <input
+                type="search"
+                id="buscador"
+                placeholder="Buscar lugar..."
+                autocomplete="off"
+            >
+        </div>
+
+        <div class="filtros">
+            <button type="button" class="filtro activo" data-tipo="Todos">📍 Todos</button>
+            <button type="button" class="filtro" data-tipo="Lugar turístico">🏛️ Lugares turísticos</button>
+            <button type="button" class="filtro" data-tipo="Restaurante">🍴 Restaurantes</button>
+            <button type="button" class="filtro" data-tipo="Hotel">🛏️ Hoteles</button>
+        </div>
+
+        <div class="ayuda">
+            <h3>¿Cómo usar?</h3>
+            <p>📍 Selecciona una gotita.</p>
+            <p>🔎 Busca un lugar.</p>
+            <p>🏷️ Utiliza los filtros.</p>
+            <p>➕ Usa los controles de zoom.</p>
+            <p>🏠 Explora la ciudad.</p>
+        </div>
+    </aside>
+
+    <!-- PANEL CENTRAL: MAPA -->
+    <section class="zona">
+        <div class="titulo">
+            <h2>📍 Mapa interactivo de Tenango del Valle</h2>
+            <p>Explora las calles y descubre lugares.</p>
+        </div>
+
+        <div id="mapa" aria-label="Mapa interactivo de Tenango del Valle"></div>
+        <p id="mensajeMapa" class="mensaje-mapa" role="status"></p>
+    </section>
+
+    <!-- PANEL DERECHO: INFORMACIÓN -->
+    <section class="informacion">
+        <div id="informacionLugar">
+            <div class="inicio-info">
+                <div class="icono-inicio">📍</div>
+                <h2>Selecciona un lugar</h2>
+                <p>Haz clic en una gotita del mapa para conocer su información.</p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+
+<!-- CARRUSEL AUTOMÁTICO -->
+<section class="carrusel-seccion">
+    <h2>Conoce Tenango del Valle</h2>
+
+    <div class="carrusel">
+        <div class="carrusel-contenido" id="carruselContenido">
+
+            <div class="tarjeta">
+                <img src="{{ url_for('static', filename='imagenes/zona.png') }}"
+                     alt="Zona Arqueológica de Teotenango">
+                <h3>Zona Arqueológica de Teotenango</h3>
+            </div>
+
+            <div class="tarjeta">
+                <img src="{{ url_for('static', filename='imagenes/museo.jpg') }}"
+                     alt="Museo Arqueológico">
+                <h3>Museo Arqueológico Dr. Román Piña Chan</h3>
+            </div>
+
+            <div class="tarjeta">
+                <img src="{{ url_for('static', filename='imagenes/treatro.jpg') }}"
+                     alt="Teatro Municipal">
+                <h3>Teatro Municipal Abundio Gómez</h3>
+            </div>
+
+            <div class="tarjeta">
+                <img src="{{ url_for('static', filename='imagenes/parque.jpg') }}"
+                     alt="Parque Humboldt">
+                <h3>Parque Humboldt</h3>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<footer id="contacto">
+    <h2>Conoce tu Ciudad</h2>
+    <p>Descubre la historia, cultura y lugares de Tenango del Valle.</p>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    // Aquí debe estar tu código JavaScript del mapa.
+</script>
+<script>
+   
+/* =====================================================
+   CONOCE TENANGO - MAPA.JS CORREGIDO
+===================================================== */
+
+const lugaresBase = [
+    { id: 1, nombre: "Zona Arqueológica de Teotenango", tipo: "Lugar turístico", icono: "🏛️", foto: "static/imagenes/zona.png", direccion: "C. Román Piña Chan 1014, Teotenango, 52300 Tenango de Arista.", descripcion: "Importante zona arqueológica de Tenango del Valle.", horario: "Consultar horario actual.", eventos: "Festival Cultural del Quinto Sol." },
+    { id: 2, nombre: "Museo Arqueológico Dr. Román Piña Chan", tipo: "Lugar turístico", icono: "🏛️", foto: "static/imagenes/museo.jpg", direccion: "De Las Pirámides s/n, Teotenango, 52303 Tenango de Arista.", descripcion: "Museo dedicado al patrimonio arqueológico de la región.", horario: "Consultar horario actual.", eventos: "Exposiciones culturales." },
+    { id: 3, nombre: "Parroquia de la Asunción de María", tipo: "Lugar turístico", icono: "⛪", foto: "static/imagenes/asuncion.jpg", direccion: "C. Álvaro Obregón, Centro, Tenango de Arista.", descripcion: "Templo histórico del centro.", horario: "Consultar horarios.", eventos: "Actividades religiosas y culturales." },
+    { id: 4, nombre: "Teatro Municipal Abundio Gómez", tipo: "Lugar turístico", icono: "🎭", foto: "static/imagenes/treatro.jpg", direccion: "Centro de Tenango de Arista.", descripcion: "Recinto histórico y cultural.", horario: "Consultar actividades.", eventos: "Presentaciones culturales." },
+    { id: 5, nombre: "Kiosco Municipal", tipo: "Lugar turístico", icono: "⛲", foto: "static/imagenes/kiosco.jpg", direccion: "Plaza Cívica, Centro, Tenango de Arista.", descripcion: "Kiosco representativo de la plaza.", horario: "Acceso exterior.", eventos: "Actividades de la plaza." },
+    { id: 6, nombre: "Parque Humboldt", tipo: "Lugar turístico", icono: "🌳", foto: "static/imagenes/parque.jpg", direccion: "Gral. Porfirio Díaz Mori 105, Centro.", descripcion: "Espacio verde para caminar y descansar.", horario: "Consultar horario.", eventos: "Actividades recreativas." },
+    { id: 7, nombre: "Templo del Calvario", tipo: "Lugar turístico", icono: "⛪", foto: "static/imagenes/calvario.jpg", direccion: "Zona del Calvario, Tenango de Arista.", descripcion: "Templo histórico de Tenango.", horario: "Consultar horarios.", eventos: "Actividades religiosas." },
+    { id: 8, nombre: "Centro Cultural León Guzmán", tipo: "Lugar turístico", icono: "🎨", foto: "static/imagenes/centro cul.jpeg", direccion: "De La Constitución, Tenango de Arista.", descripcion: "Espacio para actividades culturales.", horario: "Consultar programación.", eventos: "Exposiciones y talleres." },
+    { id: 9, nombre: "Escuela Primaria Benito Juárez", tipo: "Lugar turístico", icono: "🏫", foto: "static/imagenes/benito.JPG", direccion: "Cabecera municipal de Tenango del Valle.", descripcion: "Lugar incluido entre los sitios emblemáticos.", horario: "Según actividades escolares.", eventos: "Actividades educativas." },
+    { id: 10, nombre: "Capilla de la Virgen de Guadalupe", tipo: "Lugar turístico", icono: "⛪", foto: "static/imagenes/guadalupe.jpg", direccion: "Tenango de Arista, Estado de México.", descripcion: "Capilla emblemática del municipio.", horario: "Consultar horarios.", eventos: "Actividades religiosas." },
+    { id: 11, nombre: "Capilla de San Salvador", tipo: "Lugar turístico", icono: "⛪", foto: "static/imagenes/sansalvador.png", direccion: "Tenango de Arista, Estado de México.", descripcion: "Capilla emblemática del municipio.", horario: "Consultar horarios.", eventos: "Actividades religiosas." },
+    { id: 12, nombre: "Parque Ecológico León Guzmán", tipo: "Lugar turístico", icono: "🌳", foto: "static/imagenes/parque2.jpg", direccion: "Tenango del Valle, Estado de México.", descripcion: "Espacio natural y recreativo.", horario: "Consultar horario.", eventos: "Actividades ambientales." },
+
+    { id: 13, nombre: "Restaurante Bar Xoly", tipo: "Restaurante", icono: "🍴", foto: "static/imagenes/Xoly.jpg", direccion: "Av. Miguel Hidalgo y Costilla 108, Centro, 52300 Tenango de Arista.", descripcion: "Restaurante ubicado en el centro.", horario: "Consultar horario.", eventos: "No especificado." },
+    { id: 14, nombre: "Las Piñas", tipo: "Restaurante", icono: "🍴", foto: "static/imagenes/las piñas.jpg", direccion: "C. Niños Héroes de Chapultepec 300, Los Cedros, 52305 Tenango de Arista.", descripcion: "Restaurante ubicado en Los Cedros.", horario: "Consultar horario.", eventos: "No especificado." },
+    { id: 15, nombre: "Restaurante Laurent's", tipo: "Restaurante", icono: "🍴", foto: "static/imagenes/restaurante.jpg", direccion: "Ignacio Zaragoza 501, Los Cedros, 52305 Tenango de Arista.", descripcion: "Restaurante ubicado en Los Cedros.", horario: "Consultar horario.", eventos: "No especificado." },
+    { id: 16, nombre: "Don Regio Cortes & Grill", tipo: "Restaurante", icono: "🥩", foto: "static/imagenes/don regio.jpg", direccion: "C. Octavio Paz 202, Ojo de Agua, 52303 Tenango de Arista.", descripcion: "Restaurante especializado en cortes.", horario: "Consultar horario.", eventos: "No especificado." },
+    { id: 17, nombre: "CALIFORNIA COUNTRY", tipo: "Restaurante", icono: "🍴", foto: "static/imagenes/california.jpg", direccion: "C. Octavio Paz 210, Col. del Valle, 52300 Tenango de Arista.", descripcion: "Restaurante ubicado en Colonia del Valle.", horario: "Consultar horario.", eventos: "No especificado." },
+    { id: 18, nombre: "La Niña de las Hamburguesas", tipo: "Restaurante", icono: "🍔", foto: "static/imagenes/la niña.jpg", direccion: "Juárez Norte, Centro, 52304 Tenango de Arista.", descripcion: "Hamburguesería ubicada en el centro.", horario: "Consultar horario.", eventos: "No especificado." },
+    { id: 19, nombre: "Valle Rustico", tipo: "Restaurante", icono: "🍴", foto: "static/imagenes/valle.jpg", direccion: "C. de los Pinos, Col. del Valle, 52300 Tenango de Arista.", descripcion: "Restaurante ubicado en Colonia del Valle.", horario: "Consultar horario.", eventos: "No especificado." },
+
+    { id: 20, nombre: "Hotel Boutique Roble del Valle", tipo: "Hotel", icono: "🛏️", foto: "static/imagenes/boutique.jpg", direccion: "Clavel 102, Parque Industrial, 52300 Tenango de Arista.", descripcion: "Hospedaje ubicado en Parque Industrial.", horario: "Consultar disponibilidad.", eventos: "No especificado." },
+    { id: 21, nombre: "Hotel Room", tipo: "Hotel", icono: "🛏️", foto: "static/imagenes/alo.avif", direccion: "Av. Bulevar Narciso Bassols, 52300 Tenango de Arista.", descripcion: "Hotel ubicado sobre Boulevard Narciso Bassols.", horario: "Consultar disponibilidad.", eventos: "No especificado." },
+    { id: 22, nombre: "Suites San José", tipo: "Hotel", icono: "🛏️", foto: "static/imagenes/san jose.jpg", direccion: "Matamoros y Av. Benito Juárez Norte, Centro.", descripcion: "Alojamiento ubicado en el centro.", horario: "Consultar disponibilidad.", eventos: "No especificado." },
+    { id: 23, nombre: "Hotel Quinto Sol", tipo: "Hotel", icono: "🛏️", foto: "static/imagenes/sol.jpg", direccion: "2a. Cda. de Hidalgo 131, 52300 Tenango de Arista.", descripcion: "Hotel ubicado en Tenango de Arista.", horario: "Consultar disponibilidad.", eventos: "No especificado." },
+    { id: 24, nombre: "Hotel & Villas La Paloma", tipo: "Hotel", icono: "🛏️", foto: "static/imagenes/la paloma.jpg", direccion: "Blvd. Narciso Bassols 350, 52300 Tenango de Arista.", descripcion: "Hotel y villas.", horario: "Consultar disponibilidad.", eventos: "No especificado." },
+    { id: 25, nombre: "Hotel Linda Vista", tipo: "Hotel", icono: "🛏️", foto: "static/imagenes/linda.jpg", direccion: "52300 Tenango de Arista, Estado de México.", descripcion: "Hotel ubicado en Tenango del Valle.", horario: "Consultar disponibilidad.", eventos: "No especificado." },
+    { id: 26, nombre: "Hotel Cataleya", tipo: "Hotel", icono: "🛏️", foto: "static/imagenes/cataleya.jpg", direccion: "Ignacio Pichardo Pagaza 140, San Isidro, 52300.", descripcion: "Hotel ubicado en San Isidro.", horario: "Consultar disponibilidad.", eventos: "No especificado." }
+];
+
+// Lista inicial: conserva todos los lugares del mapa original.
+let lugares = [...lugaresBase];
+
+const puntos = {
+    1: [19.10851, -99.59786],
+    2: [19.11048, -99.59601],
+    3: [19.10283, -99.59156],
+    4: [19.10380, -99.59160],
+    5: [19.10350, -99.59090],
+    6: [19.10330, -99.59470],
+    7: [19.10580, -99.59580],
+    8: [19.10400, -99.59180],
+    9: [19.10520, -99.59040],
+    10: [19.10590, -99.59420],
+    11: [19.10100, -99.59200],
+    12: [19.10180, -99.59700],
+    13: [19.10370, -99.59280],
+    14: [19.09710, -99.59080],
+    15: [19.09830, -99.58880],
+    16: [19.10600, -99.58680],
+    17: [19.10570, -99.58650],
+    18: [19.10600, -99.59450],
+    19: [19.10500, -99.58550],
+    20: [19.10850, -99.58600],
+    21: [19.10700, -99.58950],
+    22: [19.10660, -99.59650],
+    23: [19.10987, -99.588699],
+    24: [19.10880, -99.58900],
+    25: [19.09950, -99.59800],
+    26: [19.09590, -99.58850]
+};
+
+
+/* =========================================
+   CARGAR INFORMACIÓN DESDE MYSQL
+   Conserva fotos, iconos y coordenadas originales.
+========================================= */
+
+
+async function cargarLugaresBD() {
+    try {
+        const respuesta = await fetch("/api/lugares");
+
+        if (!respuesta.ok) {
+            throw new Error("No se pudieron consultar los lugares.");
+        }
+
+        const datosBD = await respuesta.json();
+
+        if (!Array.isArray(datosBD)) {
+            throw new Error("La respuesta de MySQL no es una lista.");
+        }
+
+        // Restaurar los 26 lugares originales.
+        lugares = lugaresBase.map(original => ({ ...original }));
+
+        // Revisar cada lugar guardado en MySQL.
+        datosBD.forEach(registro => {
+            const existente = lugares.find(
+                lugar =>
+                    normalizar(lugar.nombre) === normalizar(registro.nombre)
+            );
+
+            if (existente) {
+                // Actualizar información sin cambiar foto ni icono.
+                existente.idBD = registro.id_lugar;
+                existente.tipo = registro.categoria || existente.tipo;
+                existente.direccion = registro.direccion || existente.direccion;
+                existente.descripcion = registro.descripcion || existente.descripcion;
+                existente.horario = registro.horario || existente.horario;
+
+                // Actualizar coordenadas solo si existen.
+                if (
+                    registro.latitud != null &&
+                    registro.longitud != null
+                ) {
+                    puntos[existente.id] = [
+                        Number(registro.latitud),
+                        Number(registro.longitud)
+                    ];
+                }
+
+            } else if (
+                registro.latitud != null &&
+                registro.longitud != null
+            ) {
+                // Crear un identificador de mapa distinto de los originales.
+                const idMapa = 100000 + Number(registro.id_lugar);
+
+                const iconos = {
+                    "Lugar turístico": "🏛️",
+                    "Restaurante": "🍽️",
+                    "Hotel": "🏨"
+                };
+
+                const nuevoLugar = {
+                    id: idMapa,
+                    idBD: registro.id_lugar,
+                    nombre: registro.nombre,
+                    tipo: registro.categoria,
+                    icono: iconos[registro.categoria] || "📍",
+                    foto: "/static/imagenes/logo.png",
+                    direccion: registro.direccion || "Dirección por confirmar",
+                    descripcion: registro.descripcion || "Información próximamente.",
+                    horario: registro.horario || "Horario por confirmar",
+                    eventos: "Consulta los próximos eventos."
+                };
+
+                // Guardar el lugar nuevo y sus coordenadas.
+                lugares.push(nuevoLugar);
+
+                puntos[idMapa] = [
+                    Number(registro.latitud),
+                    Number(registro.longitud)
+                ];
+            }
+        });
+
+        console.log("Lugares cargados desde MySQL:", datosBD.length);
+        console.log(
+            "Lugares disponibles en el mapa:",
+            lugares.length
+        );
+
+    } catch (error) {
+        console.error("No se pudieron cargar los lugares de MySQL:", error);
+
+        // Mantener disponibles los lugares originales si falla MySQL.
+        lugares = lugaresBase.map(original => ({ ...original }));
+    }
+}
+
+
+let mapa = null;
+let marcadores = [];
+let filtroActual = "Todos";
+let textoBusqueda = "";
+let slideActual = 0;
+let temporizadorCarrusel = null;
+
+function normalizar(texto) {
+    return String(texto || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim();
+}
+
+function escaparHTML(texto) {
+    return String(texto ?? "").replace(/[&<>"']/g, caracter => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[caracter]);
+}
+
+function colorLugar(tipo) {
+    if (tipo === "Hotel") return "#844bc1";
+    if (tipo === "Restaurante") return "#e94b43";
+    return "#20a85a";
+}
+
+function crearIconoLugar(lugar) {
+    return L.divIcon({
+        className: "gotita",
+        html: `<div class="pin" style="background:${colorLugar(lugar.tipo)}"><span>${lugar.icono}</span></div>`,
+        iconSize: [40, 49],
+        iconAnchor: [20, 49],
+        tooltipAnchor: [0, -45]
+    });
+}
+
+function crearDecoracion(coordenada, html, ancho = 40, alto = 40, anchorX = null, anchorY = null) {
+    const icono = L.divIcon({
+        className: "decoracion",
+        html,
+        iconSize: [ancho, alto],
+        iconAnchor: [
+            anchorX === null ? ancho / 2 : anchorX,
+            anchorY === null ? alto / 2 : anchorY
+        ]
+    });
+
+    L.marker(coordenada, {
+        icon: icono,
+        interactive: false,
+        keyboard: false,
+        zIndexOffset: -1000
+    }).addTo(mapa);
+}
+
+function iniciarMapa() {
+    const elementoMapa = document.getElementById("mapa");
+    if (!elementoMapa) return;
+
+    if (typeof L === "undefined") {
+        elementoMapa.innerHTML = "No se pudo cargar el mapa. Revisa tu conexión a Internet.";
+        return;
+    }
+
+    mapa = L.map(elementoMapa, {
+        scrollWheelZoom: true
+    }).setView([19.10449, -99.59081], 15);
+
+    L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+        {
+            maxZoom: 19,
+            attribution: "Tiles © Esri"
+        }
+    ).addTo(mapa);
+
+    lugares.forEach(lugar => {
+        const coordenada = puntos[lugar.id];
+        if (!coordenada) return;
+
+        const marcador = L.marker(coordenada, {
+            icon: crearIconoLugar(lugar)
+        }).addTo(mapa);
+
+        marcador.bindTooltip(lugar.nombre, { direction: "top" });
+        marcador.on("click", () => mostrarInformacion(lugar));
+
+        marcadores.push({ marker: marcador, lugar });
+    });
+
+    // Casas decorativas
+    [
+        [19.1068, -99.5970], [19.1072, -99.5950],
+        [19.1060, -99.5910], [19.1020, -99.5980],
+        [19.1005, -99.5900], [19.0980, -99.5960],
+        [19.1065, -99.5888], [19.1015, -99.5868],
+        [19.0975, -99.5920]
+    ].forEach(p => crearDecoracion(
+        p,
+        '<div class="casa"><div class="techo"></div><div class="cuerpo"></div><div class="puerta"></div><div class="ventana"></div></div>',
+        52, 48, 26, 42
+    ));
+
+    // Árboles decorativos
+    [
+        [19.1075, -99.5960], [19.1065, -99.5990],
+        [19.1055, -99.5900], [19.1035, -99.5975],
+        [19.1015, -99.5965], [19.1000, -99.5910],
+        [19.0980, -99.5940], [19.1070, -99.5880],
+        [19.1025, -99.5890], [19.0975, -99.5910],
+        [19.1058, -99.5930], [19.0995, -99.5980],
+        [19.1045, -99.5880]
+    ].forEach(p => crearDecoracion(
+        p, '<div class="arbol">🌳</div>', 35, 35, 17, 32
+    ));
+
+    // Parques decorativos
+    [
+        [19.1030, -99.5963],
+        [19.1010, -99.5890]
+    ].forEach(p => crearDecoracion(
+        p, '<div class="parque">🌳 ⛲ 🌳</div>', 90, 58, 45, 29
+    ));
+
+    crearDecoracion(
+        [19.1008, -99.5888],
+        '<div class="agua"></div>',
+        90, 55, 45, 27
+    );
+
+    // Vehículos decorativos
+    [
+        [19.1047, -99.5955, "🚗"],
+        [19.1015, -99.5920, "🚕"],
+        [19.1060, -99.5900, "🚙"],
+        [19.0985, -99.5940, "🚗"]
+    ].forEach(a => crearDecoracion(
+        [a[0], a[1]],
+        `<div class="auto">${a[2]}</div>`,
+        32, 32, 16, 16
+    ));
+
+    // Leer filtro de la URL
+    const tipoURL = new URLSearchParams(window.location.search).get("tipo");
+
+    if (tipoURL) {
+        const tiposValidos = ["Todos", "Lugar turístico", "Restaurante", "Hotel"];
+        filtroActual = tiposValidos.find(
+            tipo => normalizar(tipo) === normalizar(tipoURL)
+        ) || "Todos";
+    }
+
+    actualizarVisibilidadMarcadores();
+    actualizarBotonesFiltro();
+
+    // Permitir que Leaflet calcule el tamaño correcto del mapa
+    setTimeout(() => {
+        if (mapa) mapa.invalidateSize();
+    }, 200);
+}
+
+function actualizarVisibilidadMarcadores() {
+    if (!mapa) return;
+
+    const tipoSeleccionado = normalizar(filtroActual);
+    const texto = normalizar(textoBusqueda);
+    let cantidad = 0;
+
+    marcadores.forEach(({ marker, lugar }) => {
+        const coincideTipo =
+            tipoSeleccionado === "todos" ||
+            normalizar(lugar.tipo) === tipoSeleccionado;
+
+        const contenido = normalizar(
+            `${lugar.nombre} ${lugar.tipo} ${lugar.direccion} ${lugar.descripcion}`
+        );
+
+        const coincideTexto = !texto || contenido.includes(texto);
+
+        if (coincideTipo && coincideTexto) {
+            if (!mapa.hasLayer(marker)) marker.addTo(mapa);
+            cantidad++;
+        } else if (mapa.hasLayer(marker)) {
+            mapa.removeLayer(marker);
+        }
+    });
+
+    const mensaje = document.getElementById("mensajeMapa");
+    if (mensaje) {
+        mensaje.textContent = cantidad
+            ? `${cantidad} lugar(es) encontrado(s).`
+            : "No se encontraron lugares con esos criterios.";
+    }
+}
+
+function actualizarBotonesFiltro() {
+    document.querySelectorAll(".filtro").forEach(boton => {
+        const activo =
+            normalizar(boton.dataset.tipo) === normalizar(filtroActual);
+
+        boton.classList.toggle("activo", activo);
+        boton.setAttribute("aria-pressed", String(activo));
+    });
+}
+
+function filtrar(tipo) {
+    filtroActual = tipo || "Todos";
+    textoBusqueda = "";
+
+    const buscador = document.getElementById("buscador");
+    if (buscador) buscador.value = "";
+
+    actualizarVisibilidadMarcadores();
+    actualizarBotonesFiltro();
+}
+
+function buscarLugar() {
+    const buscador = document.getElementById("buscador");
+    textoBusqueda = buscador ? buscador.value : "";
+
+    actualizarVisibilidadMarcadores();
+
+    const texto = normalizar(textoBusqueda);
+    if (!mapa || !texto) return;
+
+    const coincidencias = marcadores.filter(({ lugar }) => {
+        const contenido = normalizar(
+            `${lugar.nombre} ${lugar.tipo} ${lugar.direccion} ${lugar.descripcion}`
+        );
+
+        const coincideTipo =
+            normalizar(filtroActual) === "todos" ||
+            normalizar(lugar.tipo) === normalizar(filtroActual);
+
+        return coincideTipo && contenido.includes(texto);
+    });
+
+    if (coincidencias.length === 1) {
+        const lugar = coincidencias[0].lugar;
+        mostrarInformacion(lugar);
+        mapa.setView(puntos[lugar.id], 16);
+    }
+}
+
+function mostrarInformacion(lugar) {
+    const caja = document.getElementById("informacionLugar");
+    if (!caja || !lugar) return;
+
+    const nombreSeguro = escaparHTML(lugar.nombre);
+    const direccionSegura = escaparHTML(lugar.direccion);
+    const descripcionSegura = escaparHTML(lugar.descripcion);
+    const horarioSeguro = escaparHTML(lugar.horario);
+    const eventosSeguro = escaparHTML(lugar.eventos);
+    const tipoSeguro = escaparHTML(lugar.tipo);
+
+    const enlaceMapa =
+        "https://www.google.com/maps/search/?api=1&query=" +
+        encodeURIComponent(lugar.direccion);
+
+    const imagen = lugar.foto
+        ? `<img src="${escaparHTML(lugar.foto)}"
+                class="foto-lugar"
+                alt="${nombreSeguro}"
+                onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';">
+           <div class="foto-lugar-sin" style="display:none">
+                ${lugar.icono}
+                <span>Fotografía no disponible</span>
+           </div>`
+        : `<div class="foto-lugar-sin">
+                ${lugar.icono}
+                <span>Fotografía no disponible</span>
+           </div>`;
+
+    caja.innerHTML = `
+        <article class="info">
+            ${imagen}
+            <h2>${nombreSeguro}</h2>
+
+            <span class="categoria" style="background:${colorLugar(lugar.tipo)}">
+                ${tipoSeguro}
+            </span>
+
+            <div class="dato">
+                <strong>📍 Ubicación</strong><br>
+                ${direccionSegura}
+            </div>
+
+            <div class="dato">
+                <strong>🕐 Horario</strong><br>
+                ${horarioSeguro}
+            </div>
+
+            <div class="dato">
+                <strong>ℹ️ Descripción</strong><br>
+                ${descripcionSegura}
+            </div>
+
+            <div class="dato">
+                <strong>📅 Eventos</strong><br>
+                ${eventosSeguro}
+            </div>
+
+            <a href="${enlaceMapa}" target="_blank" rel="noopener noreferrer" class="ubicacion">
+                📍 Ver ubicación en Google Maps
+            </a>
+
+            <div class="botones">
+                <button type="button" class="comprar" id="botonComprar">
+                    🛒 Comprar boleto
+                </button>
+                <button type="button" class="reservar" id="botonReservar">
+                    📅 Reservar
+                </button>
+            </div>
+        </article>
+    `;
+
+    document.getElementById("botonComprar").addEventListener("click", () => {
+        comprarLugar(lugar);
+    });
+
+    document.getElementById("botonReservar").addEventListener("click", () => {
+        reservarLugar(lugar);
+    });
+
+    try {
+        localStorage.setItem("lugarSeleccionado", lugar.nombre);
+        localStorage.setItem("lugarDetalle", JSON.stringify(lugar));
+    } catch (error) {
+        console.warn("No se pudo guardar el lugar en el navegador.", error);
+    }
+
+    if (mapa && puntos[lugar.id]) {
+        mapa.setView(puntos[lugar.id], 16, { animate: true });
+    }
+}
+
+
+function comprarLugar(lugar) {
+    if (!lugar) {
+        alert("No se encontró la información del lugar.");
+        return;
+    }
+
+    try {
+        localStorage.setItem("lugarSeleccionado", lugar.nombre);
+        localStorage.setItem("lugarDetalle", JSON.stringify(lugar));
+    } catch (error) {
+        console.warn("No se pudo guardar el lugar.", error);
+    }
+
+    // Abre la página de compra en Flask.
+    window.location.href = "/comprar";
+}
+
+function reservarLugar(lugar) {
+    if (!lugar) {
+        alert("No se encontró la información del lugar.");
+        return;
+    }
+
+    try {
+        localStorage.setItem("lugarSeleccionado", lugar.nombre);
+        localStorage.setItem("lugarDetalle", JSON.stringify(lugar));
+    } catch (error) {
+        console.warn("No se pudo guardar el lugar.", error);
+    }
+
+    // Abre la página de reservaciones en Flask.
+    window.location.href = "/reservar";
+}
+
+function verDetalle(idOClave) {
+    const lugar = lugares.find(
+        item => item.id === Number(idOClave)
+    );
+
+    if (!lugar) {
+        alert("No se encontró el lugar.");
+        return;
+    }
+
+    localStorage.setItem("lugarDetalle", JSON.stringify(lugar));
+    localStorage.setItem("lugarSeleccionado", lugar.nombre);
+
+    window.location.href = "/detalle/" + lugar.id;
+}
+
+/* =========================
+   CARRUSEL AUTOMÁTICO
+========================= */
+
+
+function iniciarCarrusel() {
+    const carrusel = document.getElementById("carruselContenido");
+
+    if (!carrusel) return;
+
+    const tarjetas = carrusel.querySelectorAll(".tarjeta");
+    if (tarjetas.length < 2) return;
+
+    let indice = 0;
+
+    if (temporizadorCarrusel) {
+        clearInterval(temporizadorCarrusel);
+    }
+
+    temporizadorCarrusel = setInterval(() => {
+        indice++;
+
+        if (indice >= tarjetas.length) {
+            indice = 0;
+        }
+
+        carrusel.scrollTo({
+            left: indice * (
+                tarjetas[0].getBoundingClientRect().width + 18
+            ),
+            behavior: "smooth"
+        });
+    }, 3000);
+}
+
+
+/* =========================
+   INICIO
+========================= */
+
+window.filtrar = filtrar;
+window.buscarLugar = buscarLugar;
+window.mostrarInformacion = mostrarInformacion;
+window.comprarLugar = comprarLugar;
+window.reservarLugar = reservarLugar;
+window.verDetalle = verDetalle;
+
+
+window.addEventListener("DOMContentLoaded", async () => {
+    await cargarLugaresBD();
+
+    iniciarMapa();
+    iniciarCarrusel();
+
+    document.querySelectorAll(".filtro").forEach(boton => {
+        boton.addEventListener("click", () => filtrar(boton.dataset.tipo));
+    });
+
+    const buscador = document.getElementById("buscador");
+
+    if (buscador) {
+        buscador.addEventListener("input", buscarLugar);
+    }
+});
+
+function moverCarrusel(direccion) {
+    const carrusel = document.getElementById("carruselContenido");
+
+    if (carrusel) {
+        carrusel.scrollBy({
+            left: direccion * 250,
+            behavior: "smooth"
+        });
+    }
+}
+
+
+</script>
+</body>
+</html>

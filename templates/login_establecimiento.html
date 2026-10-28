@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso de establecimientos - Conoce Tenango</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #eaf7fc;
+            color: #12385c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .contenedor {
+            background: white;
+            width: 100%;
+            max-width: 460px;
+            padding: 35px;
+            border-radius: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            color: #173f63;
+            text-align: center;
+            margin-bottom: 12px;
+            font-size: 27px;
+        }
+
+        .descripcion {
+            text-align: center;
+            color: #5c7185;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: #173f63;
+            font-weight: bold;
+            margin: 12px 0 6px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 15px;
+            margin-bottom: 12px;
+            border: 2px solid #d7e8f2;
+            border-radius: 12px;
+            background: #f8fcfe;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4361ee;
+            background: white;
+        }
+
+        button, .volver {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 12px;
+            background: #4361ee;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        button:hover, .volver:hover {
+            background: #3049c8;
+        }
+
+        .volver {
+            background: #173f63;
+        }
+
+        .mensaje {
+            padding: 12px;
+            border-radius: 10px;
+            background: #e5f3ff;
+            color: #315875;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="contenedor">
+        <h1>🏨 Acceso de establecimientos</h1>
+
+        <p class="descripcion">
+            Inicia sesión para gestionar las visitas de tu establecimiento
+            en Conoce Tenango.
+        </p>
+
+        {% with mensajes = get_flashed_messages(with_categories=true) %}
+            {% for categoria, mensaje in mensajes %}
+                <div class="mensaje">{{ mensaje }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <form method="POST"
+              action="{{ url_for('login_establecimiento') }}">
+
+            <label for="correo">Correo electrónico</label>
+            <input
+                type="email"
+                id="correo"
+                name="correo"
+                placeholder="Tu correo registrado"
+                maxlength="150"
+                autocomplete="username"
+                required
+            >
+
+            <label for="password">Contraseña</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Tu contraseña"
+                autocomplete="current-password"
+                required
+            >
+
+            <button type="submit">Iniciar sesión</button>
+        </form>
+
+        <a class="volver" href="{{ url_for('inicio') }}">
+            Volver al inicio
+        </a>
+    </main>
+</body>
+</html>

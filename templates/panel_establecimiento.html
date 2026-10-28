@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel del establecimiento - Conoce Tenango</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #eaf7fc;
+            color: #12385c;
+        }
+
+        header {
+            background: #173f63;
+            color: white;
+            padding: 22px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        header h1 {
+            font-size: 24px;
+        }
+
+        header a, .boton {
+            background: #4361ee;
+            color: white;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        main {
+            width: 92%;
+            max-width: 850px;
+            margin: 40px auto;
+        }
+
+        .tarjeta {
+            background: white;
+            padding: 30px;
+            border-radius: 22px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        h2, h3 {
+            color: #173f63;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #5c7185;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .dato {
+            background: #f1f8fc;
+            padding: 16px;
+            margin: 12px 0;
+            border-radius: 12px;
+        }
+
+        .aviso {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            background: #e5f3ff;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .tarjeta {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>CONOCE TENANGO</h1>
+        <a href="{{ url_for('logout_establecimiento') }}">Cerrar sesión</a>
+    </header>
+
+    <main>
+        <section class="tarjeta">
+            <h2>🏨 Panel del establecimiento</h2>
+
+            <p>
+                Bienvenido, {{ establecimiento.nombre }}.
+                Has iniciado sesión correctamente.
+            </p>
+
+            <div class="dato">
+                <strong>Establecimiento:</strong>
+                {{ establecimiento.nombre }}
+            </div>
+
+            <div class="dato">
+                <strong>Lugar asociado:</strong>
+                {{ establecimiento.nombre_lugar }}
+            </div>
+
+            <div class="dato">
+                <strong>Correo:</strong>
+                {{ establecimiento.correo }}
+            </div>
+
+                
+<div class="aviso">
+    <h3>🎁 Programa de puntos</h3>
+    <p>
+        Inicia sesión como establecimiento y escanea el QR personal
+        del visitante para identificarlo y registrar su visita.
+    </p>
+</div>
+
+
+        </section>
+    </main>
+</body>
+</html>

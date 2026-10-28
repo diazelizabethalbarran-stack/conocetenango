@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Registro - Conoce Tenango</title>
+
+    <style>
+        /* =========================================
+   DISEÑO GENERAL - CONOCE TENANGO
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: #eaf7fc;
+    color: #12385c;
+}
+
+
+/* =========================================
+   ENCABEZADO
+========================================= */
+
+header {
+    width: 100%;
+    background: #173f63;
+    padding: 22px 35px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header h1 {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    background: #4361ee;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+header a:hover {
+    background: #3049c8;
+}
+
+
+/* =========================================
+   CONTENIDO
+========================================= */
+
+main {
+    width: 92%;
+    max-width: 1100px;
+    margin: 40px auto;
+}
+
+
+/* =========================================
+   TARJETAS
+========================================= */
+
+.detalle {
+    background: white;
+    width: 100%;
+    max-width: 850px;
+    margin: auto;
+    padding: 35px;
+    border-radius: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+.detalle h2 {
+    color: #173f63;
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+.detalle h3 {
+    color: #173f63;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.detalle p {
+    color: #5c7185;
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   IMÁGENES
+========================================= */
+
+.detalle img {
+    max-width: 100%;
+    border-radius: 18px;
+}
+
+
+/* =========================================
+   DATOS
+========================================= */
+
+.dato {
+    background: #f1f8fc;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 14px;
+    text-align: left;
+}
+
+.dato strong {
+    color: #173f63;
+}
+
+
+/* =========================================
+   INPUTS
+========================================= */
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 13px 15px;
+    margin: 7px 0 16px;
+
+    border: 2px solid #d7e8f2;
+    border-radius: 12px;
+
+    outline: none;
+    font-size: 15px;
+
+    background: #f8fcfe;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #4361ee;
+    background: white;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+
+/* =========================================
+   ETIQUETAS
+========================================= */
+
+label {
+    display: block;
+    text-align: left;
+    margin-top: 5px;
+
+    color: #173f63;
+    font-weight: bold;
+}
+
+
+/* =========================================
+   BOTONES
+========================================= */
+
+button {
+    border: none;
+    padding: 12px 22px;
+
+    border-radius: 12px;
+
+    background: #4361ee;
+    color: white;
+
+    font-weight: bold;
+    font-size: 15px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #3049c8;
+    transform: translateY(-2px);
+}
+
+
+/* =========================================
+   BOTONES GRANDES
+========================================= */
+
+.botones {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+
+/* =========================================
+   BOTÓN REGRESAR
+========================================= */
+
+.regresar {
+    margin-top: 25px;
+    background: #173f63;
+}
+
+.regresar:hover {
+    background: #0d2e4d;
+}
+
+
+/* =========================================
+   PERFIL
+========================================= */
+
+.avatar {
+    width: 100px;
+    height: 100px;
+
+    margin: 0 auto 20px;
+
+    border-radius: 50%;
+
+    background: #dfeefe;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 45px;
+}
+
+
+/* =========================================
+   ADMINISTRACIÓN
+========================================= */
+
+.admin-seccion {
+    background: #f1f8fc;
+    padding: 20px;
+    margin: 18px 0;
+    border-radius: 18px;
+    text-align: left;
+}
+
+.admin-seccion h3 {
+    margin-bottom: 15px;
+    color: #173f63;
+}
+
+.admin-botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+
+/* =========================================
+   CONTACTO
+========================================= */
+
+.contacto .dato {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.contacto .dato strong {
+    font-size: 22px;
+}
+
+
+/* =========================================
+   MENSAJE
+========================================= */
+
+.mensaje {
+    background: #e5f3ff;
+    padding: 14px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    color: #315875;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 700px) {
+
+    header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .detalle {
+        padding: 22px;
+    }
+
+    .botones,
+    .admin-botones {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+}
+    </style>
+
+</head>
+
+<body>
+
+<header>
+    <a href="{{ url_for('inicio') }}">← Regresar</a>
+
+    <h1>CONOCE TENANGO</h1>
+
+</header>
+
+
+<main>
+
+    <div class="detalle">
+
+        <h2>📝 Registro de usuario</h2>
+    
+        <p class="mensaje">
+            Crea tu cuenta para guardar tus lugares
+            favoritos y realizar reservaciones.
+        </p>
+    
+        {% with mensajes = get_flashed_messages(with_categories=true) %}
+    {% for categoria, mensaje in mensajes %}
+        <div class="mensaje {{ categoria }}">
+            {{ mensaje }}
+        </div>
+    {% endfor %}
+{% endwith %}
+       
+<form method="POST" action="{{ url_for('registro') }}">
+
+    <label for="nombre">Nombre completo:</label>
+    <input
+        type="text"
+        id="nombre"
+        name="nombre"
+        placeholder="Escribe tu nombre"
+        required
+    >
+
+    <label for="correo">Correo electrónico:</label>
+    <input
+        type="email"
+        id="correo"
+        name="correo"
+        placeholder="ejemplo@correo.com"
+        required
+    >
+
+    <label for="telefono">Número de teléfono:</label>
+    <input
+        type="tel"
+        id="telefono"
+        name="telefono"
+        placeholder="Tu número"
+        required
+    >
+
+    <label for="datos_personales">Datos personales:</label>
+    <textarea
+        id="datos_personales"
+        name="datos_personales"
+        placeholder="Escribe tus datos"
+    ></textarea>
+
+    <label for="password">Contraseña:</label>
+    <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Crea una contraseña"
+        required
+    >
+
+    <button type="submit">REGISTRARME</button>
+
+</form>
+
+
+    </div>
+
+</main>
+
+</body>
+</html>

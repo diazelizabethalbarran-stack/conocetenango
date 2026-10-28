@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar compra - Conoce Tenango</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eaf7fc;
+            color: #12385c;
+            padding: 20px;
+        }
+        main {
+            max-width: 500px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>CONOCE TENANGO</h1>
+        <h2>Información del boleto</h2>
+        <p><strong>Compra:</strong> {{ compra.id_compra }}</p>
+        <p><strong>Evento:</strong> {{ compra.nombre_evento }}</p>
+        <p><strong>Fecha:</strong> {{ compra.fecha_evento }}</p>
+        <p><strong>Hora:</strong> {{ compra.hora_evento }}</p>
+        <p><strong>Boletos:</strong> {{ compra.cantidad }}</p>
+        <p><strong>Total:</strong> ${{ "%.2f"|format(compra.total) }}</p>
+        <p><strong>Estado:</strong> {{ compra.estado }}</p>
+    </main>
+</body>
+</html>

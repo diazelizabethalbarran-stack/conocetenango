@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso de administrador - Conoce Tenango</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #eaf7fc;
+            color: #12385c;
+        }
+
+        .contenedor {
+            width: 100%;
+            max-width: 420px;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px #173f6320;
+        }
+
+        h1 {
+            text-align: center;
+            color: #173f63;
+            font-size: 26px;
+        }
+
+        p {
+            text-align: center;
+            color: #526b80;
+        }
+
+        label {
+            display: block;
+            margin: 16px 0 7px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #b8d4e5;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #4361ee;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #173f63;
+        }
+
+        .enlaces {
+            margin-top: 20px;
+            text-align: center;
+            line-height: 2;
+        }
+
+        a {
+            color: #2859c5;
+        }
+
+        .mensaje {
+            padding: 10px;
+            border-radius: 7px;
+            background: #fff0f0;
+            color: #a32222;
+        }
+    </style>
+</head>
+<body>
+    <main class="contenedor">
+        <h1>Conoce Tenango</h1>
+        <p>Acceso exclusivo para administradores</p>
+
+        {% with mensajes = get_flashed_messages(with_categories=true) %}
+            {% for categoria, mensaje in mensajes %}
+                <p class="mensaje">{{ mensaje }}</p>
+            {% endfor %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('login_admin') }}">
+            <label for="correo">Correo electrónico</label>
+            <input
+                type="email"
+                id="correo"
+                name="correo"
+                required
+                autocomplete="username"
+            >
+
+            <label for="password">Contraseña</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                autocomplete="current-password"
+            >
+
+            <button type="submit">Iniciar sesión</button>
+        </form>
+
+        <div class="enlaces">
+            <a href="{{ url_for('login') }}">Acceso de usuarios</a>
+            <br>
+            <a href="{{ url_for('inicio') }}">Volver al inicio</a>
+        </div>
+    </main>
+</body>
+</html>

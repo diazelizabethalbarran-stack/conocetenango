@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar mis compras - Conoce Tenango</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 15px;
+            font-family: Arial, sans-serif;
+            background: #eaf7fc;
+            color: #12385c;
+        }
+
+        .contenedor {
+            max-width: 950px;
+            margin: auto;
+            padding: 25px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px #00000015;
+        }
+
+        h1 {
+            text-align: center;
+            color: #173f63;
+        }
+
+        .compra {
+            margin: 20px 0;
+            padding: 18px;
+            border: 1px solid #d5e6ef;
+            border-radius: 12px;
+        }
+
+        .compra p {
+            margin: 10px 0;
+        }
+
+        .boton {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 11px 18px;
+            background: #4361ee;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .boton:hover {
+            background: #304bd0;
+        }
+
+        .volver {
+            display: inline-block;
+            margin-top: 15px;
+            color: #173f63;
+        }
+
+        .vacio {
+            text-align: center;
+            padding: 25px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="contenedor">
+        <h1>🎟️ Consultar mis compras</h1>
+        <p>Selecciona una compra para consultar tu comprobante y código QR.</p>
+
+        {% if compras %}
+            {% for compra in compras %}
+                <section class="compra">
+                    <h3>{{ compra.nombre_evento }}</h3>
+
+                    <p>
+                        <strong>Número de compra:</strong>
+                        {{ compra.id_compra }}
+                    </p>
+
+                    <p>
+                        <strong>Boletos:</strong>
+                        {{ compra.cantidad }}
+                    </p>
+
+                    <p>
+                        <strong>Total:</strong>
+                        ${{ "%.2f"|format(compra.total|float) }}
+                    </p>
+
+                    <p>
+                        <strong>Estado:</strong>
+                        {{ compra.estado }}
+                    </p>
+
+                    <p>
+                        <strong>Fecha de compra:</strong>
+                        {{ compra.fecha_compra }}
+                    </p>
+
+                    <a class="boton"
+                       href="{{ url_for('comprobante', id_compra=compra.id_compra) }}">
+                        Ver comprobante y QR
+                    </a>
+                </section>
+            {% endfor %}
+        {% else %}
+            <div class="vacio">
+                <p>Aún no tienes compras registradas.</p>
+                <a class="boton" href="{{ url_for('comprar') }}">
+                    Comprar boletos
+                </a>
+            </div>
+        {% endif %}
+
+        <a class="volver" href="{{ url_for('perfil') }}">
+            ← Volver a mi perfil
+        </a>
+    </main>
+</body>
+</html>

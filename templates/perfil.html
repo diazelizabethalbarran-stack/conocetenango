@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Perfil - Conoce Tenango</title>
+
+     <style>
+        /* =========================================
+   DISEÑO GENERAL - CONOCE TENANGO
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: #eaf7fc;
+    color: #12385c;
+}
+
+
+/* =========================================
+   ENCABEZADO
+========================================= */
+
+header {
+    width: 100%;
+    background: #173f63;
+    padding: 22px 35px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header h1 {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    background: #4361ee;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+header a:hover {
+    background: #3049c8;
+}
+
+
+/* =========================================
+   CONTENIDO
+========================================= */
+
+main {
+    width: 92%;
+    max-width: 1100px;
+    margin: 40px auto;
+}
+
+
+/* =========================================
+   TARJETAS
+========================================= */
+
+.detalle {
+    background: white;
+    width: 100%;
+    max-width: 850px;
+    margin: auto;
+    padding: 35px;
+    border-radius: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+.detalle h2 {
+    color: #173f63;
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+.detalle h3 {
+    color: #173f63;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.detalle p {
+    color: #5c7185;
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   IMÁGENES
+========================================= */
+
+.detalle img {
+    max-width: 100%;
+    border-radius: 18px;
+}
+
+
+/* =========================================
+   DATOS
+========================================= */
+
+.dato {
+    background: #f1f8fc;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 14px;
+    text-align: left;
+}
+
+.dato strong {
+    color: #173f63;
+}
+
+
+/* =========================================
+   INPUTS
+========================================= */
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 13px 15px;
+    margin: 7px 0 16px;
+
+    border: 2px solid #d7e8f2;
+    border-radius: 12px;
+
+    outline: none;
+    font-size: 15px;
+
+    background: #f8fcfe;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #4361ee;
+    background: white;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+
+/* =========================================
+   ETIQUETAS
+========================================= */
+
+label {
+    display: block;
+    text-align: left;
+    margin-top: 5px;
+
+    color: #173f63;
+    font-weight: bold;
+}
+
+
+/* =========================================
+   BOTONES
+========================================= */
+
+button {
+    border: none;
+    padding: 12px 22px;
+
+    border-radius: 12px;
+
+    background: #4361ee;
+    color: white;
+
+    font-weight: bold;
+    font-size: 15px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #3049c8;
+    transform: translateY(-2px);
+}
+
+
+/* =========================================
+   BOTONES GRANDES
+========================================= */
+
+.botones {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+
+/* =========================================
+   BOTÓN REGRESAR
+========================================= */
+
+.regresar {
+    margin-top: 25px;
+    background: #173f63;
+}
+
+.regresar:hover {
+    background: #0d2e4d;
+}
+
+
+/* =========================================
+   PERFIL
+========================================= */
+
+.avatar {
+    width: 100px;
+    height: 100px;
+
+    margin: 0 auto 20px;
+
+    border-radius: 50%;
+
+    background: #dfeefe;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 45px;
+}
+
+
+/* =========================================
+   ADMINISTRACIÓN
+========================================= */
+
+.admin-seccion {
+    background: #f1f8fc;
+    padding: 20px;
+    margin: 18px 0;
+    border-radius: 18px;
+    text-align: left;
+}
+
+.admin-seccion h3 {
+    margin-bottom: 15px;
+    color: #173f63;
+}
+
+.admin-botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+
+/* =========================================
+   CONTACTO
+========================================= */
+
+.contacto .dato {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.contacto .dato strong {
+    font-size: 22px;
+}
+
+
+/* =========================================
+   MENSAJE
+========================================= */
+
+.mensaje {
+    background: #e5f3ff;
+    padding: 14px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    color: #315875;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 700px) {
+
+    header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .detalle {
+        padding: 22px;
+    }
+
+    .botones,
+    .admin-botones {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+}
+
+
+/* =========================================
+   PUNTOS Y VISITAS
+========================================= */
+
+.puntos-card {
+    background: #f1f8fc;
+    padding: 22px;
+    margin: 22px 0;
+    border-radius: 18px;
+    border: 2px solid #d7e8f2;
+}
+
+.puntos-total {
+    color: #4361ee;
+    font-size: 38px;
+    font-weight: bold;
+    margin: 12px 0;
+}
+
+.qr-perfil {
+    width: 220px;
+    max-width: 100%;
+    display: block;
+    margin: 18px auto;
+}
+
+.tabla-visitas {
+    width: 100%;
+    margin-top: 15px;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.tabla-visitas th,
+.tabla-visitas td {
+    padding: 12px;
+    border-bottom: 1px solid #d7e8f2;
+}
+
+.tabla-visitas th {
+    background: #173f63;
+    color: white;
+}
+
+.historial {
+    overflow-x: auto;
+    margin-top: 15px;
+}
+
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="{{ url_for('mapa') }}">← Volver</a>
+
+    <h1>CONOCE TENANGO</h1>
+
+</header>
+
+
+
+<main>
+
+    <div class="detalle perfil">
+
+        <div class="avatar">
+            👤
+        </div>
+
+        {% if usuario %}
+
+            <h2>Mi perfil</h2>
+
+            <p class="mensaje">
+                ¡Bienvenido/a, {{ usuario.nombre }}!
+                Estos son los datos de tu cuenta.
+            </p>
+
+            <div class="dato">
+                <strong>Nombre completo:</strong>
+                <p>{{ usuario.nombre }}</p>
+            </div>
+
+            <div class="dato">
+                <strong>Correo electrónico:</strong>
+                <p>{{ usuario.correo }}</p>
+            </div>
+
+            <div class="dato">
+                <strong>Número de teléfono:</strong>
+                <p>{{ usuario.telefono or 'No registrado' }}</p>
+            </div>
+
+            
+<!-- SALDO DE PUNTOS -->
+<div class="puntos-card">
+    <h3>⭐ Mis puntos</h3>
+
+    <p class="puntos-total">
+        {{ puntos|default(0) }}
+    </p>
+
+    <p>Puntos acumulados por tus visitas.</p>
+</div>
+
+<!-- QR PERSONAL -->
+<div class="puntos-card">
+    <h3>📱 Mi código QR</h3>
+
+    <p>
+        Presenta tu código en un establecimiento autorizado
+        para validar tu visita.
+    </p>
+
+    {% if qr_base64 %}
+<img
+    src="data:image/png;base64,{{ qr_base64 }}"
+    alt="Código QR personal"
+    class="qr-perfil"
+>
+{% else %}
+    <p>Tu código QR todavía no está disponible.</p>
+{% endif %}
+</div>
+
+<!-- HISTORIAL -->
+<div class="puntos-card">
+    <h3>📍 Mi historial de visitas</h3>
+
+    {% if visitas %}
+        <div class="historial">
+            <table class="tabla-visitas">
+                <thead>
+                    <tr>
+                        <th>Lugar</th>
+                        <th>Puntos</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for visita in visitas %}
+                    <tr>
+                        <td>{{ visita.nombre_lugar }}</td>
+                        <td>{{ visita.puntos_obtenidos }}</td>
+                        <td>{{ visita.fecha_visita }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>Aún no tienes visitas registradas.</p>
+    {% endif %}
+</div>
+
+<!-- HISTORIAL DE COMPRAS -->
+<div class="puntos-card">
+    <h3>🎟️ Mi historial de compras</h3>
+
+    {% if compras %}
+        <div class="historial">
+            <table class="tabla-visitas">
+                <thead>
+                    <tr>
+                        <th>N.º</th>
+                        <th>Evento</th>
+                        <th>Cantidad</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for compra in compras %}
+                    <tr>
+                        <td>{{ compra.id_compra }}</td>
+                        <td>{{ compra.nombre_evento }}</td>
+                        <td>{{ compra.cantidad }}</td>
+                        <td>${{ "%.2f"|format(compra.total|float) }}</td>
+                        <td>{{ compra.estado }}</td>
+                        <td>{{ compra.fecha_compra }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>Aún no tienes compras registradas.</p>
+        <p>Cuando compres boletos para un evento, aparecerán aquí.</p>
+    {% endif %}
+</div>
+
+            <div class="dato">
+                <strong>Tipo de cuenta:</strong>
+                <p>
+                    {% if usuario.rol == 'admin' %}
+                        Administrador
+                    {% else %}
+                        Usuario
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="botones">
+
+                <a href="{{ url_for('mapa') }}">
+                    <button type="button">
+                        🗺️ Explorar lugares
+                    </button>
+                </a>
+
+                <a href="{{ url_for('eventos') }}">
+                    <button type="button">
+                        🎉 Ver eventos
+                    </button>
+                </a>
+
+                <a href="{{ url_for('mis_compras') }}">
+                    <button type="button">
+                        🎟️ Consultar mis compras
+                    </button>
+                </a>
+
+                <a href="{{ url_for('logout') }}">
+                    <button type="button">
+                        🚪 Cerrar sesión
+                    </button>
+                </a>
+
+            </div>
+
+        {% else %}
+
+            <h2>Mi cuenta</h2>
+
+            <p class="mensaje">
+                Inicia sesión o regístrate para guardar tus lugares
+                favoritos y realizar reservaciones.
+            </p>
+
+            <div class="botones">
+
+                <a href="{{ url_for('registro') }}">
+                    <button type="button">
+                        📝 Registrarme
+                    </button>
+                </a>
+
+                <a href="{{ url_for('login') }}">
+                    <button type="button">
+                        🔐 Iniciar sesión
+                    </button>
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</main>
+
+
+</body>
+</html>

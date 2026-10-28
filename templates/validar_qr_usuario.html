@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validar visita - Conoce Tenango</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #eaf7fc;
+            color: #12385c;
+            min-height: 100vh;
+            padding: 25px 15px;
+        }
+
+        .contenedor {
+            max-width: 500px;
+            margin: 35px auto;
+            background: white;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 5px 18px rgba(18, 56, 92, 0.15);
+        }
+
+        h1 {
+            color: #173f63;
+            text-align: center;
+            margin-bottom: 22px;
+            font-size: 25px;
+        }
+
+        .dato {
+            background: #f2f9fc;
+            border-left: 4px solid #4361ee;
+            padding: 13px;
+            margin-bottom: 12px;
+            border-radius: 7px;
+            overflow-wrap: anywhere;
+        }
+
+        p {
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #4361ee;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        button:hover {
+            background: #173f63;
+        }
+
+        .nota {
+            font-size: 13px;
+            text-align: center;
+            color: #49677f;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="contenedor">
+        <h1>📍 Validar visita</h1>
+
+        <div class="dato">
+            <strong>Visitante:</strong>
+            {{ usuario.nombre }}
+        </div>
+
+        <p>
+            ¿Confirmas la visita de este usuario y deseas otorgarle
+            {{ puntos_por_visita }} puntos?
+        </p>
+
+        <form method="POST">
+            <button type="submit">Confirmar visita</button>
+        </form>
+
+        <p class="nota">
+            Conoce Tenango · Programa de puntos
+        </p>
+    </main>
+</body>
+</html>

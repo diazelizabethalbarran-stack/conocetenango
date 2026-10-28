@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acceso | Conoce Tenango</title>
+  <style>
+    /* Estilo de acceso administrativo - Conoce Tenango */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #eaf7ff, #d6ecf8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: #243447;
+}
+
+.acceso {
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    border: 1px solid #d7e9f2;
+    border-radius: 18px;
+    padding: 30px;
+    box-shadow: 0 10px 28px rgba(23, 68, 90, 0.14);
+}
+
+.acceso h1 {
+    text-align: center;
+    font-size: 1.7rem;
+    margin: 0 0 8px;
+    color: #176b91;
+}
+
+.acceso > p {
+    text-align: center;
+    color: #5d6b75;
+    margin: 0 0 24px;
+}
+
+.acceso label {
+    display: block;
+    font-weight: bold;
+    margin: 14px 0 7px;
+}
+
+.acceso input {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #b9d2df;
+    border-radius: 9px;
+    font-size: 1rem;
+    background: #fbfdff;
+    outline: none;
+}
+
+.acceso input:focus {
+    border-color: #2489b5;
+    box-shadow: 0 0 0 3px rgba(36, 137, 181, 0.15);
+}
+
+.acceso button {
+    width: 100%;
+    margin-top: 22px;
+    padding: 13px;
+    border: 0;
+    border-radius: 9px;
+    background: #2489b5;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.acceso button:hover {
+    background: #176b91;
+}
+
+.mensaje {
+    padding: 10px;
+    border-radius: 8px;
+    background: #fff1f0;
+    color: #9d2929;
+    margin: 8px 0;
+}
+
+.links {
+    text-align: center;
+    margin-top: 18px;
+}
+
+.links a {
+    color: #176b91;
+    text-decoration: none;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .acceso {
+        padding: 24px 20px;
+    }
+
+    .acceso h1 {
+        font-size: 1.5rem;
+    }
+}
+</style>
+</head>
+<body>
+  <main class="acceso">
+    <h1>Conoce Tenango</h1>
+    <p>Inicia sesión para continuar</p>
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+      {% for categoria, mensaje in mensajes %}<div class="mensaje">{{ mensaje }}</div>{% endfor %}
+    {% endwith %}
+    <form method="POST" action="{{ url_for('login') }}">
+      <label for="correo">Correo electrónico</label>
+      <input id="correo" name="correo" type="email" autocomplete="username" required>
+      <label for="password">Contraseña</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required>
+      <button type="submit">Iniciar sesión</button>
+    </form>
+    <div class="links"><a href="{{ url_for('inicio') }}">Volver al inicio</a></div>
+  </main>
+</body>
+</html>
