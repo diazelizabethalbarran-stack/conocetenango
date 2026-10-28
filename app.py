@@ -7,6 +7,7 @@ import io
 import base64
 import qrcode
 
+import ssl
 import mysql.connector
 from mysql.connector import Error
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
@@ -27,7 +28,7 @@ DB_CONFIG = {
     'password': os.environ.get('DB_PASSWORD'),
     'database': os.environ.get('DB_NAME', 'conoce_tenango'),
     'port': int(os.environ.get('DB_PORT', '4000')),
-    'ssl_ca': os.path.join(BASE_DIR, 'ca.pem'),
+    'ssl_ca': os.path.join(BASE_DIR, 'isrgrootx1 (1).pem'),
     'ssl_verify_cert': True,
     'ssl_verify_identity': True
 }
