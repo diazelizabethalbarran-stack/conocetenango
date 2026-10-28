@@ -13,21 +13,29 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 
+
 load_dotenv()
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 app = Flask(__name__, template_folder='templates', static_folder='static')
-app.secret_key = os.getenv('FLASK_SECRET_KEY', 'cambia-esta-clave-en-tu-archivo-env')
+app.secret_key = os.environ.get('FLASK_SECRET_KEY')
 
 DB_CONFIG = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': 'elizabeth123',
-    'database': 'conoce_tenango',
-    'port': 3306
+    'host': os.environ.get('DB_HOST'),
+    'user': os.environ.get('DB_USER'),
+    'password': os.environ.get('DB_PASSWORD'),
+    'database': os.environ.get('DB_NAME', 'conoce_tenango'),
+    'port': int(os.environ.get('DB_PORT', '4000')),
+    'ssl_ca': os.path.join(BASE_DIR, 'ca.pem'),
+    'ssl_verify_cert': True,
+    'ssl_verify_identity': True
 }
 
 def conectar_db():
-    """Abre una conexión nueva a MySQL."""
+    """Abre una conexión segura con TiDB Cloud."""
     return mysql.connector.connect(**DB_CONFIG)
+
 
 
 def consulta(sql, valores=(), uno=False):
