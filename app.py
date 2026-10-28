@@ -774,13 +774,12 @@ def comprobante(id_compra):
     ):
         return 'No tienes permiso para ver este comprobante.', 403
 
-    # Dirección base del sitio.
-    # Para abrir el QR desde otro dispositivo, configura APP_PUBLIC_URL.
-    url_publica = os.getenv('APP_PUBLIC_URL', request.url_root.rstrip('/'))
-    enlace_qr = (
-        url_publica.rstrip('/')
-        + url_for('verificar_compra', token=compra['token_qr'])
-    )
+  # Generar el enlace público del QR de compra.
+enlace_qr = url_for(
+    'verificar_compra',
+    token=compra['token_qr'],
+    _external=True
+)
 
     codigo = qrcode.make(enlace_qr)
     memoria = io.BytesIO()
