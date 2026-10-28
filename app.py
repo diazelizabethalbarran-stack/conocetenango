@@ -775,11 +775,11 @@ def comprobante(id_compra):
         return 'No tienes permiso para ver este comprobante.', 403
 
   # Generar el enlace público del QR de compra.
-enlace_qr = url_for(
-    'verificar_compra',
-    token=compra['token_qr'],
-    _external=True
-)
+    enlace_qr = url_for(
+        'verificar_compra',
+        token=compra['token_qr'],
+        _external=True
+    )
 
     codigo = qrcode.make(enlace_qr)
     memoria = io.BytesIO()
