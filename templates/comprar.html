@@ -383,12 +383,18 @@ button:hover {
                    required>
 
             <label>Número de teléfono:</label>
-            <input type="tel"
-                   name="telefono"
-                   placeholder="Número de teléfono"
-                   maxlength="20"
-                   required>
 
+            <input
+                type="tel"
+                name="telefono"
+                id="telefono"
+                placeholder="Ingresa 10 dígitos"
+                maxlength="10"
+                minlength="10"
+                pattern="[0-9]{10}"
+                inputmode="numeric"
+                title="Ingresa exactamente 10 números"
+                required>
             <label>Evento:</label>
             <select name="id_evento" id="id_evento" required>
                 <option value="">Selecciona un evento</option>
@@ -467,98 +473,47 @@ button:hover {
     </div>
 </main>
 
+
 <script>
 const selectorEvento = document.getElementById("id_evento");
 const cantidadInput = document.getElementById("cantidad");
 const totalTexto = document.getElementById("total");
+const totalPago = document.getElementById("total_pago");
+const metodoPago = document.getElementById("metodo_pago");
+const pagoTarjeta = document.getElementById("pago_tarjeta");
+const telefono = document.getElementById("telefono");
 
 function calcularTotal() {
     const opcion = selectorEvento.options[selectorEvento.selectedIndex];
     const precio = Number(opcion?.dataset.precio || 0);
     const cantidad = Number(cantidadInput.value || 0);
+    const total = precio * cantidad;
 
-    totalTexto.textContent =
-        "$" + (precio * cantidad).toFixed(2);
+    totalTexto.textContent = "$" + total.toFixed(2);
+    totalPago.textContent = "$" + total.toFixed(2);
 }
+
+function mostrarMetodoPago() {
+    pagoTarjeta.style.display =
+        metodoPago.value === "tarjeta" ? "block" : "none";
+}
+
+telefono.addEventListener("input", function () {
+    this.value = this.value.replace(/\D/g, "").slice(0, 10);
+});
 
 selectorEvento.addEventListener("change", calcularTotal);
 cantidadInput.addEventListener("input", calcularTotal);
+metodoPago.addEventListener("change", mostrarMetodoPago);
 
 calcularTotal();
-    
-const selectorEvento = document.getElementById("id_evento");
-
-const cantidadInput = document.getElementById("cantidad");
-
-const totalTexto = document.getElementById("total");
-
-const totalPago = document.getElementById("total_pago");
-
-const metodoPago = document.getElementById("metodo_pago");
-
-const pagoTarjeta = document.getElementById("pago_tarjeta");
-
-
-function calcularTotal() {
-
-    const opcion = selectorEvento.options[
-        selectorEvento.selectedIndex
-    ];
-
-    const precio = Number(
-        opcion?.dataset.precio || 0
-    );
-
-    const cantidad = Number(
-        cantidadInput.value || 0
-    );
-
-    const total = precio * cantidad;
-
-    totalTexto.textContent =
-        "$" + total.toFixed(2);
-
-    totalPago.textContent =
-        "$" + total.toFixed(2);
-}
-
-
-function mostrarMetodoPago() {
-
-    if (metodoPago.value === "tarjeta") {
-
-        pagoTarjeta.style.display = "block";
-
-    } else {
-
-        pagoTarjeta.style.display = "none";
-
-    }
-
-}
-
-
-selectorEvento.addEventListener(
-    "change",
-    calcularTotal
-);
-
-cantidadInput.addEventListener(
-    "input",
-    calcularTotal
-);
-
-metodoPago.addEventListener(
-    "change",
-    mostrarMetodoPago
-);
-
-
-calcularTotal();
-
 mostrarMetodoPago();
 
-</script>
+const telefono = document.getElementById("telefono");
 
+telefono.addEventListener("input", function () {
+    this.value = this.value.replace(/\D/g, "").slice(0, 10);
+});
+</script>
 </body>
 </html>
