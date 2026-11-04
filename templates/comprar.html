@@ -416,16 +416,52 @@ button:hover {
                 <p id="total">$0.00</p>
             </div>
 
-            <h3>💳 Datos de pago</h3>
+           
+            <h3>💳 Método de pago</h3>
 
-            <p class="mensaje">
-                Esta compra es una demostración escolar.
-                No ingreses datos reales de tarjetas bancarias.
+            <label>Selecciona cómo deseas pagar:</label>
+
+            <select name="metodo_pago" id="metodo_pago" required>
+
+            <option value="">Selecciona un método de pago</option>
+
+            <option value="tarjeta">
+                💳 Tarjeta de crédito o débito
+            </option>
+
+            </select>
+
+            <div id="pago_tarjeta" class="dato">
+
+            <h3>💳 Pago con tarjeta</h3>
+
+                <p>
+                    Al continuar, podrás realizar el pago mediante
+                    una plataforma de pagos segura.
             </p>
 
+            <p>
+                No ingreses los datos de tu tarjeta directamente
+                en esta página.
+            </p>
+
+        </div>
+
+        <div class="dato">
+
+        <strong>Resumen de compra</strong>
+
+            <p>
+                Total a pagar:
+                <span id="total_pago">$0.00</span>
+            </p>
+
+        </div>
+
             <button type="submit">
-                REGISTRAR COMPRA
+            CONTINUAR AL PAGO
             </button>
+
 
         </form>
     </div>
@@ -449,6 +485,79 @@ selectorEvento.addEventListener("change", calcularTotal);
 cantidadInput.addEventListener("input", calcularTotal);
 
 calcularTotal();
+    
+const selectorEvento = document.getElementById("id_evento");
+
+const cantidadInput = document.getElementById("cantidad");
+
+const totalTexto = document.getElementById("total");
+
+const totalPago = document.getElementById("total_pago");
+
+const metodoPago = document.getElementById("metodo_pago");
+
+const pagoTarjeta = document.getElementById("pago_tarjeta");
+
+
+function calcularTotal() {
+
+    const opcion = selectorEvento.options[
+        selectorEvento.selectedIndex
+    ];
+
+    const precio = Number(
+        opcion?.dataset.precio || 0
+    );
+
+    const cantidad = Number(
+        cantidadInput.value || 0
+    );
+
+    const total = precio * cantidad;
+
+    totalTexto.textContent =
+        "$" + total.toFixed(2);
+
+    totalPago.textContent =
+        "$" + total.toFixed(2);
+}
+
+
+function mostrarMetodoPago() {
+
+    if (metodoPago.value === "tarjeta") {
+
+        pagoTarjeta.style.display = "block";
+
+    } else {
+
+        pagoTarjeta.style.display = "none";
+
+    }
+
+}
+
+
+selectorEvento.addEventListener(
+    "change",
+    calcularTotal
+);
+
+cantidadInput.addEventListener(
+    "input",
+    calcularTotal
+);
+
+metodoPago.addEventListener(
+    "change",
+    mostrarMetodoPago
+);
+
+
+calcularTotal();
+
+mostrarMetodoPago();
+
 </script>
 
 </body>
