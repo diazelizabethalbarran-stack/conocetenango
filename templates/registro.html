@@ -388,18 +388,22 @@ button:hover {
 
     <label for="telefono">Número de teléfono:</label>
     <input
-        type="tel"
-        id="telefono"
-        name="telefono"
-        placeholder="Tu número"
-        required
-    >
+    type="tel"
+    name="telefono"
+    id="telefono"
+    placeholder="Número de teléfono"
+    maxlength="10"
+    minlength="10"
+    pattern="[0-9]{10}"
+    inputmode="numeric"
+    required>
 
-    <label for="datos_personales">Datos personales:</label>
+
+    <label for="datos_personales">Comentarios:</label>
     <textarea
         id="datos_personales"
         name="datos_personales"
-        placeholder="Escribe tus datos"
+        placeholder="Escribe que te gustaría"
     ></textarea>
 
     <label for="password">Contraseña:</label>
@@ -421,4 +425,11 @@ button:hover {
 </main>
 
 </body>
+    <script>
+const telefono = document.getElementById("telefono");
+
+telefono.addEventListener("input", function () {
+    this.value = this.value.replace(/[^0-9]/g, "").slice(0, 10);
+});
+</script>
 </html>
